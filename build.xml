@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<project name="Hello World Project" default="build">
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="target/classes"/>
+    <property name="buildVersion" value="1.1.0"/>
+
+
+    <path id = "classpath.id">
+        <fileset dir="lib" includes="**/*.jar" />
+        <pathelement path="${build.dir}"/>
+    </path>
+
+    <target name="info">
+        <echo>
+            "Calculator"
+        </echo>
+    </target>
+
+    <target name="compile">
+        <echo>Compile</echo>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" source="11" target="11" includeantruntime="1.9">
+            <classpath refid="classpath.id"/>
+        </javac>
+    </target>
+
+    <target name="test">
+        <echo>Test phase</echo>
+        <junit printsummary="true" showoutput="true" >
+            <classpath refid="classpath.id"/>
+            <formatter type="brief" usefile="plain"/>
+            <test name="example.CalTest"/>
+        </junit>
+    </target>
+
+    <target name="build" depends="compile, test">
+        <echo>Build Phase ${buildVersion}</echo>
+        <jar destfile="target/ant.jar" basedir="${build.dir}" excludes="**/*Test.class">
+        	<zipgroupfileset dir="lib" includes="*.jar" />
+            <manifest>
+                <attribute name="Main-Class" value="example.AppMain"/>
+            </manifest>
+        </jar>
+    </target>
+</project>
